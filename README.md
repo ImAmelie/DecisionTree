@@ -1,6 +1,10 @@
-# 手撕决策树（人工智能/机器学习）
+<div align="center">
+  <h1>手撕决策树（人工智能/机器学习）</h1>
+  <p>
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><a href="https://www.gnu.org/licenses/gpl-3.0.html"><img alt="GPLv3开源许可协议" style="border-width:0;width:88px" src="https://www.gnu.org/graphics/gplv3-with-text-136x68.png" /></a>
+  </p>
+</div>
 
-<center><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><a href="https://www.gnu.org/licenses/gpl-3.0.html"><img alt="GPLv3开源许可协议" style="border-width:0;width:88px" src="https://www.gnu.org/graphics/gplv3-with-text-136x68.png" /></a></center>
 
 ## 前言
 
