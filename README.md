@@ -1,5 +1,7 @@
 # 手撕决策树（人工智能/机器学习）
 
+<center><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><a href="https://www.gnu.org/licenses/gpl-3.0.html"><img alt="GPLv3开源许可协议" style="border-width:0;width:88px" src="https://www.gnu.org/graphics/gplv3-with-text-136x68.png" /></a></center>
+
 ## 前言
 
 最近小伙伴 Revival 教了我点人工智能/机器学习的知识，作为检测我的学习效果，他提出了让我“手撸决策树”的考验。
