@@ -59,4 +59,4 @@ std::vector<Raisin> load(const std::string &path) {
     return set;
 }
 
-}
+} // namespace RAISIN_NAMESPACE

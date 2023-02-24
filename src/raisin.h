@@ -38,6 +38,6 @@ std::string getType(const Raisin &v);
 
 std::vector<Raisin> load(const std::string &path);
 
-}
+} // namespace RAISIN_NAMESPACE
 
 #endif

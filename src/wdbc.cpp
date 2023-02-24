@@ -4,6 +4,7 @@
 #include <vector>
 
 namespace WDBC_NAMESPACE {
+
 float getA0(const WDBC &v) { return v.a0; }
 float getA1(const WDBC &v) { return v.a1; }
 float getA2(const WDBC &v) { return v.a2; }
@@ -68,4 +69,4 @@ std::vector<WDBC> load(const std::string &path) {
     return set;
 }
 
-}
+} // namespace WDBC_NAMESPACE
