@@ -29,17 +29,22 @@ RT mostType(const std::vector<T> &set);
  */
 template<typename T, typename RT, RT (*F)(const T &), int ArgNum, typename GetArgFun>
 class Model {
+public:
+    // 数据集中各属性的类型，目前用不到，保留
+    // 如果编译出错，说明模板参数 GetArgFun 不是函数类型
+    using ArgType = decltype(GetArgFun());
+
 private:
+    // 节点类，代表模型中的节点
     class Node {
         friend class Model<T, RT, F, ArgNum, GetArgFun>;
     private:
-        enum Type { Leaf, Middle };
-        Type type;
+        enum Type { Leaf, Middle } type; // 节点类型，叶节点或中间节点
         // type is Middle
         std::pair<int, float> bestArg;
         std::vector<std::shared_ptr<Node>> subNode;
         // type is Leaf
-        RT result;
+        RT result; // 如果该节点是叶节点，此对象保存分类结果
     };
     std::vector<int> curArgs;
     std::shared_ptr<Node> root;
@@ -76,13 +81,6 @@ void Model<T, RT, F, ArgNum, GetArgFun>::train(const std::vector<T> &set, std::s
             curArgs.push_back(i);
         }
         root = node;
-    }
-
-    // set.size()永不为0，所以这个块不会执行，是屎山
-    if (set.size() == 0) {
-        node->type = Node::Leaf;
-        node->result = parent->result;
-        return;
     }
 
     auto cbegin = set.cbegin();
