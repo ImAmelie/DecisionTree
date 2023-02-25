@@ -33,6 +33,8 @@ WDBC 数据集：
 569 个数据，训练与测试比例为 7:3 结果准确率是 92.44%
 ```
 
+[数据集下载网站](https://archive.ics.uci.edu/ml/index.php)
+
 ## 构建
 
 可以使用 CMake 工具直接构建，也可以使用 g++/clang++ 等工具构建。
