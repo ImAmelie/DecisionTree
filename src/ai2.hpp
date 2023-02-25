@@ -181,30 +181,15 @@ float Model<T, RT, F, ArgNum, GetArgFun>::test(const std::vector<T> &set) {
         throw new std::runtime_error("test set member num is 0");
     }
 
-    float TP, FP, TN, FN;
-    TP = FP = TN = FN = 0;
-
-    RT trueType = F(set.at(0)); // 设第一个元素的分类为正例
+    float t = 0;
 
     for (const auto &v : set) {
-        RT realType = F(v);
-        RT testResultType = result(v);
-        if (realType == trueType) { // 真实结果为正例
-            if (testResultType == realType) { // 预测结果与真实结果一致
-                TP++;
-            } else {
-                FN++;
-            }
-        } else { // 真实结果为反例
-            if (testResultType == realType) { // 预测结果与真实结果一致
-                TN++;
-            } else {
-                FP++;
-            }
+        if (F(v) == result(v)) {
+            t++;
         }
     }
 
-    return (TP + TN) / (TP + TN + FP + FN);
+    return t / set.size();
 }
 
 template<typename T, typename RT, RT (*F)(const T &), int ArgNum, typename GetArgFun>
