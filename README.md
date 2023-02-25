@@ -47,3 +47,9 @@ g++ main.cpp raisin.cpp wdbc.cpp -o demo.exe
 ./demo.exe
 ```
 
+## 关于剪枝
+
+在 `main.cpp` 头文件包含时引用了 `ai.hpp` ，这个是不含剪枝功能的。
+
+如果要启用预剪枝，把 `ai.hpp` 改为 `ai2.hpp` 。
+
