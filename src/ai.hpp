@@ -1,3 +1,7 @@
+/**
+ * ai1.hpp 所包含的决策树没有剪枝功能
+ */
+
 #ifndef AI_H
 #define AI_H
 
