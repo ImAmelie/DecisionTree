@@ -31,15 +31,21 @@ void raisin() {
          << " s"
          << endl;
 
-     std::vector<RAISIN_NAMESPACE::Raisin> testSet = RAISIN_NAMESPACE::load("../data/Raisin_test.data");
-     float accuracy = model.test(testSet);
-     testSet.clear();
+    std::vector<RAISIN_NAMESPACE::Raisin> testSet = RAISIN_NAMESPACE::load("../data/Raisin_test.data");
+    start = clock();
+    float accuracy = model.test(testSet);
+    end = clock();
+    testSet.clear();
 
-     cout << std::fixed << std::setprecision(2)
-          << "测试结果准确率: "
-          << accuracy * 100
-          << "%"
-          << endl;
+    cout << std::fixed << std::setprecision(2)
+         << "测试用时："
+         << float(end - start) / CLOCKS_PER_SEC
+         << " s"
+         << endl
+         << "测试结果准确率: "
+         << accuracy * 100
+         << "%"
+         << endl;
 }
 
 void wdbc() {
@@ -89,15 +95,21 @@ void wdbc() {
          << " s"
          << endl;
 
-     std::vector<WDBC_NAMESPACE::WDBC> testSet = WDBC_NAMESPACE::load("../data/wdbc_test.data");
-     float accuracy = model.test(testSet);
-     testSet.clear();
+    std::vector<WDBC_NAMESPACE::WDBC> testSet = WDBC_NAMESPACE::load("../data/wdbc_test.data");
+    start = clock();
+    float accuracy = model.test(testSet);
+    end = clock();
+    testSet.clear();
 
-     cout << std::fixed << std::setprecision(2)
-          << "测试结果准确率: "
-          << accuracy * 100
-          << "%"
-          << endl;
+    cout << std::fixed << std::setprecision(2)
+         << "测试用时："
+         << float(end - start) / CLOCKS_PER_SEC
+         << " s"
+         << endl
+         << "测试结果准确率: "
+         << accuracy * 100
+         << "%"
+         << endl;
 }
 
 int main(int, char **) {
