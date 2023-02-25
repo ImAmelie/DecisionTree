@@ -18,9 +18,18 @@ RT mostType(const std::vector<T> &set);
 
 // 类定义
 
+/**
+ * 决策树模型类
+ * 模板参数：
+ *   T: 数据集合中数据的类型
+ *   RT: 数据的分类标签类型
+ *   F: 指向 获取单个数据分类标签的函数 的指针
+ *   ArgNum: 数据集合中数据的元素个数
+ *   GetArgFun: 获取单个数据属性值的函数 的函数类型
+ */
 template<typename T, typename RT, RT (*F)(const T &), int ArgNum, typename GetArgFun>
 class Model {
-public:
+private:
     class Node {
         friend class Model<T, RT, F, ArgNum, GetArgFun>;
     private:
@@ -34,19 +43,22 @@ public:
     };
     std::vector<int> curArgs;
     std::shared_ptr<Node> root;
+
+    // 工具成员函数
+    inline std::pair<int, float> selectArg(const std::vector<T> &set, const std::vector<int> &curArgs);
+    inline float Ent(const std::vector<T> &set);
+    inline float Ent(const std::vector<std::pair<float, RT>> &set);
+
+public:
     std::vector<GetArgFun> getFun;
+
     void train(const std::vector<T> &set, std::shared_ptr<Node> parent);
     float test(const std::vector<T> &set);
     RT result(const T &value);
 
-    // 工具成员函数
-    std::pair<int, float> selectArg(const std::vector<T> &set, const std::vector<int> &curArgs);
-    float Ent(const std::vector<T> &set);
-    float Ent(const std::vector<std::pair<float, RT>> &set);
-
-    // 保存到本地文件
+    // 把模型保存到本地文件
     void save(const std::string &path);
-    // 从本地文件加载
+    // 从本地文件加载模型
     void load(const std::string &path);
 };
 
