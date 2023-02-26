@@ -23,8 +23,7 @@ struct Raisin {
                fabs(Eccentricity - v.Eccentricity) < 0.0001 &&
                fabs(ConvexArea - v.ConvexArea) < 0.0001 &&
                fabs(Extent - v.Extent) < 0.0001 &&
-               fabs(Perimeter - v.Perimeter) < 0.0001 &&
-               type == v.type;
+               fabs(Perimeter - v.Perimeter) < 0.0001;
     }
 };
 

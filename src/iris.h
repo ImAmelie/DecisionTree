@@ -14,8 +14,7 @@ struct Iris {
         return fabs(a0 - v.a0) < 0.0001 &&
                fabs(a1 - v.a1) < 0.0001 &&
                fabs(a2 - v.a2) < 0.0001 &&
-               fabs(a3 - v.a3) < 0.0001 &&
-               type == v.type;
+               fabs(a3 - v.a3) < 0.0001;
     }
 };
 

@@ -42,8 +42,7 @@ struct WDBC {
                fabs(a26 - v.a26) < 0.0001 &&
                fabs(a27 - v.a27) < 0.0001 &&
                fabs(a28 - v.a28) < 0.0001 &&
-               fabs(a29 - v.a29) < 0.0001 &&
-               result == v.result;
+               fabs(a29 - v.a29) < 0.0001;
     }
 };
 

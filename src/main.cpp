@@ -7,6 +7,7 @@
 #include "raisin.h"
 #include "wdbc.h"
 #include "iris.h"
+#include "wine.h"
 using namespace std;
 
 void raisin() {
@@ -196,10 +197,72 @@ void iris() {
         << endl;
 }
 
-int main(int, char **) {
+void wine() {
+    clock_t start, end;
+
+    Model<WINE_NAMESPACE::Wine, int, WINE_NAMESPACE::getResult, 13, float(*)(const WINE_NAMESPACE::Wine &v)> model;
+    model.getFun.push_back(WINE_NAMESPACE::getA0);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA1);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA2);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA3);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA4);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA5);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA6);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA7);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA8);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA9);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA10);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA11);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(WINE_NAMESPACE::getA12);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+
+    std::vector<WINE_NAMESPACE::Wine> trainSet = WINE_NAMESPACE::load("../data/wine_train.data");
+    start = clock();
+    model.train(trainSet);
+    end = clock();
+    trainSet.clear();
+
+    cout << "Wine:" << endl;
+    cout << std::fixed << std::setprecision(2)
+        << "训练用时: "
+        << float(end - start) / CLOCKS_PER_SEC
+        << " s"
+        << endl;
+
+    std::vector<WINE_NAMESPACE::Wine> testSet = WINE_NAMESPACE::load("../data/wine_test.data");
+    start = clock();
+    float accuracy = model.test(testSet);
+    end = clock();
+    testSet.clear();
+
+    cout << std::fixed << std::setprecision(2)
+        << "测试用时："
+        << float(end - start) / CLOCKS_PER_SEC
+        << " s"
+        << endl
+        << "测试结果准确率: "
+        << accuracy * 100
+        << "%"
+        << endl;
+}
+
+int main(int argc, char *argv[]) {
     raisin();
     wdbc();
     iris();
+    wine();
 
     return 0;
 }

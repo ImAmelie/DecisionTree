@@ -265,7 +265,7 @@ template<typename T, typename RT, RT (*F)(const T &), int ArgNum, typename GetAr
 std::pair<int, typename Model<T, RT, F, ArgNum, GetArgFun>::ArgType>
 Model<T, RT, F, ArgNum, GetArgFun>::selectArg(const std::vector<T> &set, const std::vector<int> &curArgs) {
     int index = curArgs[0];
-    float gani = -1e20;
+    float gani = -1e60;
     float ent_set = Ent(set);
 
     ArgType point; // 划分点
@@ -280,7 +280,7 @@ Model<T, RT, F, ArgNum, GetArgFun>::selectArg(const std::vector<T> &set, const s
             return a.first < b.first;
         });
 
-        float t_max = -1e20;
+        float t_max = -1e60;
 
         if (argTypes.at(curIndex) == BestArgType::Discrete) {
             std::vector<ArgType> attrs;
