@@ -7,20 +7,20 @@
 
 namespace WINE_NAMESPACE {
 
-float getA0(const Wine&v) { return v.a0; }
-float getA1(const Wine&v) { return v.a1; }
-float getA2(const Wine&v) { return v.a2; }
-float getA3(const Wine&v) { return v.a3; }
-float getA4(const Wine&v) { return v.a4; }
-float getA5(const Wine&v) { return v.a5; }
-float getA6(const Wine&v) { return v.a6; }
-float getA7(const Wine&v) { return v.a7; }
-float getA8(const Wine&v) { return v.a8; }
-float getA9(const Wine&v) { return v.a9; }
-float getA10(const Wine &v) { return v.a10; }
-float getA11(const Wine &v) { return v.a11; }
-float getA12(const Wine &v) { return v.a12; }
-int getResult(const Wine &v) { return v.result; }
+float &getA0(const Wine &v) { return ((Wine &)v).a0; }
+float &getA1(const Wine &v) { return ((Wine &)v).a1; }
+float &getA2(const Wine &v) { return ((Wine &)v).a2; }
+float &getA3(const Wine &v) { return ((Wine &)v).a3; }
+float &getA4(const Wine &v) { return ((Wine &)v).a4; }
+float &getA5(const Wine &v) { return ((Wine &)v).a5; }
+float &getA6(const Wine &v) { return ((Wine &)v).a6; }
+float &getA7(const Wine &v) { return ((Wine &)v).a7; }
+float &getA8(const Wine &v) { return ((Wine &)v).a8; }
+float &getA9(const Wine &v) { return ((Wine &)v).a9; }
+float &getA10(const Wine &v) { return ((Wine &)v).a10; }
+float &getA11(const Wine &v) { return ((Wine &)v).a11; }
+float &getA12(const Wine &v) { return ((Wine &)v).a12; }
+int &getResult(const Wine &v) { return ((Wine &)v).result; }
 
 std::vector<Wine> load(const std::string &path) {
     std::ifstream i;

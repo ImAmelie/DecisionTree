@@ -5,12 +5,12 @@
 
 namespace IRIS_NAMESPACE {
 
-float getA0(const Iris &v) { return v.a0; }
-float getA1(const Iris &v) { return v.a1; }
-float getA2(const Iris &v) { return v.a2; }
-float getA3(const Iris &v) { return v.a3; }
+float &getA0(const Iris &v) { return ((Iris &)v).a0; }
+float &getA1(const Iris &v) { return ((Iris &)v).a1; }
+float &getA2(const Iris &v) { return ((Iris &)v).a2; }
+float &getA3(const Iris &v) { return ((Iris &)v).a3; }
 
-std::string getType(const Iris &v) { return v.type; }
+std::string &getType(const Iris &v) { return ((Iris &)v).type; }
 
 std::vector<Iris> load(const std::string &path) {
     std::ifstream i;

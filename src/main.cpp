@@ -13,7 +13,7 @@ using namespace std;
 void raisin() {
     clock_t start, end;
 
-    Model<RAISIN_NAMESPACE::Raisin, string, RAISIN_NAMESPACE::getType, 7, float(*)(const RAISIN_NAMESPACE::Raisin &v)> model;
+    Model<RAISIN_NAMESPACE::Raisin, string, RAISIN_NAMESPACE::getType, 7, float &(*)(const RAISIN_NAMESPACE::Raisin &v)> model;
     model.getFun.push_back(RAISIN_NAMESPACE::getArea);
     model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(RAISIN_NAMESPACE::getMajorAxisLength);
@@ -62,7 +62,7 @@ void raisin() {
 void wdbc() {
     clock_t start, end;
 
-    Model<WDBC_NAMESPACE::WDBC, char, WDBC_NAMESPACE::getResult, 30, float(*)(const WDBC_NAMESPACE::WDBC &v)> model;
+    Model<WDBC_NAMESPACE::WDBC, char, WDBC_NAMESPACE::getResult, 30, float &(*)(const WDBC_NAMESPACE::WDBC &v)> model;
     model.getFun.push_back(WDBC_NAMESPACE::getA0);
     model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA1);
@@ -157,7 +157,7 @@ void wdbc() {
 void iris() {
     clock_t start, end;
 
-    Model<IRIS_NAMESPACE::Iris, string, IRIS_NAMESPACE::getType, 4, float(*)(const IRIS_NAMESPACE::Iris &v)> model;
+    Model<IRIS_NAMESPACE::Iris, string, IRIS_NAMESPACE::getType, 4, float &(*)(const IRIS_NAMESPACE::Iris &v)> model;
     model.getFun.push_back(IRIS_NAMESPACE::getA0);
     model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(IRIS_NAMESPACE::getA1);
@@ -200,7 +200,7 @@ void iris() {
 void wine() {
     clock_t start, end;
 
-    Model<WINE_NAMESPACE::Wine, int, WINE_NAMESPACE::getResult, 13, float(*)(const WINE_NAMESPACE::Wine &v)> model;
+    Model<WINE_NAMESPACE::Wine, int, WINE_NAMESPACE::getResult, 13, float &(*)(const WINE_NAMESPACE::Wine &v)> model;
     model.getFun.push_back(WINE_NAMESPACE::getA0);
     model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WINE_NAMESPACE::getA1);

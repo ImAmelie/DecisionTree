@@ -27,14 +27,14 @@ struct Raisin {
     }
 };
 
-float getArea(const Raisin &v);
-float getMajorAxisLength(const Raisin &v);
-float getMinorAxisLength(const Raisin &v);
-float getEccentricity(const Raisin &v);
-float getConvexArea(const Raisin &v);
-float getExtent(const Raisin &v);
-float getPerimeter(const Raisin &v);
-std::string getType(const Raisin &v);
+float &getArea(const Raisin &v);
+float &getMajorAxisLength(const Raisin &v);
+float &getMinorAxisLength(const Raisin &v);
+float &getEccentricity(const Raisin &v);
+float &getConvexArea(const Raisin &v);
+float &getExtent(const Raisin &v);
+float &getPerimeter(const Raisin &v);
+std::string &getType(const Raisin &v);
 
 std::vector<Raisin> load(const std::string &path);
 

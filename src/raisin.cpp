@@ -5,37 +5,14 @@
 
 namespace RAISIN_NAMESPACE {
 
-float getArea(const Raisin &v) {
-    return v.Area;
-}
-
-float getMajorAxisLength(const Raisin &v) {
-    return v.MajorAxisLength;
-}
-
-float getMinorAxisLength(const Raisin &v) {
-    return v.MinorAxisLength;
-}
-
-float getEccentricity(const Raisin &v) {
-    return v.Eccentricity;
-}
-
-float getConvexArea(const Raisin &v) {
-    return v.ConvexArea;
-}
-
-float getExtent(const Raisin &v) {
-    return v.Extent;
-}
-
-float getPerimeter(const Raisin &v) {
-    return v.Perimeter;
-}
-
-std::string getType(const Raisin &v) {
-    return v.type;
-}
+float &getArea(const Raisin &v) { return ((Raisin &)v).Area; }
+float &getMajorAxisLength(const Raisin &v) { return ((Raisin &)v).MajorAxisLength; }
+float &getMinorAxisLength(const Raisin &v) { return ((Raisin &)v).MinorAxisLength; }
+float &getEccentricity(const Raisin &v) { return ((Raisin &)v).Eccentricity; }
+float &getConvexArea(const Raisin &v) { return ((Raisin &)v).ConvexArea; }
+float &getExtent(const Raisin &v) { return ((Raisin &)v).Extent; }
+float &getPerimeter(const Raisin &v) { return ((Raisin &)v).Perimeter; }
+std::string &getType(const Raisin &v) { return ((Raisin &)v).type; }
 
 std::vector<Raisin> load(const std::string &path) {
     std::ifstream i;

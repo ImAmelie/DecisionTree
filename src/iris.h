@@ -18,12 +18,12 @@ struct Iris {
     }
 };
 
-float getA0(const Iris &v);
-float getA1(const Iris &v);
-float getA2(const Iris &v);
-float getA3(const Iris &v);
+float &getA0(const Iris &v);
+float &getA1(const Iris &v);
+float &getA2(const Iris &v);
+float &getA3(const Iris &v);
 
-std::string getType(const Iris &v);
+std::string &getType(const Iris &v);
 
 std::vector<Iris> load(const std::string &path);
 

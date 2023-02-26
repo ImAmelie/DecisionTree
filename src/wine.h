@@ -28,20 +28,20 @@ struct Wine {
     }
 };
 
-float getA0(const Wine &v);
-float getA1(const Wine &v);
-float getA2(const Wine &v);
-float getA3(const Wine &v);
-float getA4(const Wine &v);
-float getA5(const Wine &v);
-float getA6(const Wine &v);
-float getA7(const Wine &v);
-float getA8(const Wine &v);
-float getA9(const Wine &v);
-float getA10(const Wine &v);
-float getA11(const Wine &v);
-float getA12(const Wine &v);
-int getResult(const Wine &v);
+float &getA0(const Wine &v);
+float &getA1(const Wine &v);
+float &getA2(const Wine &v);
+float &getA3(const Wine &v);
+float &getA4(const Wine &v);
+float &getA5(const Wine &v);
+float &getA6(const Wine &v);
+float &getA7(const Wine &v);
+float &getA8(const Wine &v);
+float &getA9(const Wine &v);
+float &getA10(const Wine &v);
+float &getA11(const Wine &v);
+float &getA12(const Wine &v);
+int &getResult(const Wine &v);
 
 std::vector<Wine> load(const std::string &path);
 
