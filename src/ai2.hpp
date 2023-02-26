@@ -64,7 +64,7 @@ private:
 public:
     std::vector<GetArgFun> getFun;
 
-    void train(const std::vector<T> &set, std::shared_ptr<Node> parent);
+    void train(const std::vector<T> &set, std::shared_ptr<Node> parent = nullptr);
     float test(const std::vector<T> &set);
     RT result(const T &value);
 
@@ -135,7 +135,7 @@ void Model<T, RT, F, ArgNum, GetArgFun>::train(const std::vector<T> &set, std::s
     }
 
     // 剪枝处理开始
-    {
+    if (0) {
         // 把当前节点当做叶节点，用验证集计算它的准确率
         node->type = Node::Leaf;
         node->result = mostType<T, RT, F>(set).first;
@@ -291,7 +291,7 @@ std::pair<int, float> Model<T, RT, F, ArgNum, GetArgFun>::selectArg(const std::v
         }
         if (t_max > gani) {
             gani = t_max;
-            index = i;
+            index = curIndex;
             point = tmpPoint;
         }
     }

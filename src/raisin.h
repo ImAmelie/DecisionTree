@@ -1,6 +1,7 @@
 #ifndef RAISIN_H
 #define RAISIN_H
 
+#include <vector>
 #include <string>
 #include <cmath>
 

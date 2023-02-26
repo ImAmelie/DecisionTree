@@ -36,32 +36,40 @@ class Model {
 public:
     // 数据集中各属性的类型，目前用不到，保留
     // 如果编译出错，说明模板参数 GetArgFun 不是函数类型
-    using ArgType = decltype(GetArgFun());
+    using ArgType = decltype(GetArgFun()(T()));
 
 private:
     // 节点类，代表模型中的节点
     class Node {
-        friend class Model<T, RT, F, ArgNum, GetArgFun>;
+        friend class Model;
+    public:
+        enum BestArgType { Discrete, Continuous };
     private:
         enum Type { Leaf, Middle } type; // 节点类型，叶节点或中间节点
         // type is Middle
-        std::pair<int, float> bestArg;
+        std::vector<int> curArgs;
+        std::pair<int, ArgType> bestArg;
+        ArgType compass;
         std::vector<std::shared_ptr<Node>> subNode;
         // type is Leaf
         RT result; // 如果该节点是叶节点，此对象保存分类结果
     };
-    std::vector<int> curArgs;
     std::shared_ptr<Node> root;
 
     // 工具成员函数
-    inline std::pair<int, float> selectArg(const std::vector<T> &set, const std::vector<int> &curArgs);
+    inline std::pair<int, ArgType> selectArg(const std::vector<T> &set, const std::vector<int> &curArgs);
     inline float Ent(const std::vector<T> &set);
-    inline float Ent(const std::vector<std::pair<float, RT>> &set);
+    inline float Ent(const std::vector<std::pair<ArgType, RT>> &set);
 
 public:
-    std::vector<GetArgFun> getFun;
+    using BestArgType = typename Node::BestArgType;
 
-    void train(const std::vector<T> &set, std::shared_ptr<Node> parent);
+    std::vector<GetArgFun> getFun;
+    std::vector<BestArgType> argTypes;
+
+    int minLeafSize = 3; // 最小叶生成尺寸
+
+    void train(const std::vector<T> &set, std::shared_ptr<Node> parent = nullptr, ArgType compass = ArgType());
     float test(const std::vector<T> &set);
     RT result(const T &value);
 
@@ -72,64 +80,100 @@ public:
 };
 
 template<typename T, typename RT, RT (*F)(const T &), int ArgNum, typename GetArgFun>
-void Model<T, RT, F, ArgNum, GetArgFun>::train(const std::vector<T> &set, std::shared_ptr<Node> parent) {
+void Model<T, RT, F, ArgNum, GetArgFun>::train(const std::vector<T> &set, std::shared_ptr<Node> parent, ArgType compass) {
     std::shared_ptr<Node> node = std::make_shared<Node>();
 
-    if (parent.get() != nullptr || parent.use_count() != 0) {
+    node->compass = compass;
+
+    if (parent) {
         parent->subNode.push_back(node);
     }
 
     node->type = Node::Middle;
-    if (root.use_count() == 0) {
+
+    if (!root) {
         for (int i = 0; i < ArgNum; ++i) {
-            curArgs.push_back(i);
+            node->curArgs.push_back(i);
         }
         root = node;
+    } else {
+        node->curArgs = parent->curArgs;
+    }
+
+    node->result = mostType<T, RT, F>(set);
+
+    if (set.size() <= minLeafSize) {
+        node->type = Node::Leaf;
+        return;
     }
 
     auto cbegin = set.cbegin();
 
-    if (count_if(set.cbegin(), set.cend(), [cbegin](const T &v) {
-        return *cbegin == v;
-    }) == set.size()) {
+    if (node->curArgs.size() == 0 ||
+        set.size() == count_if(set.cbegin(), set.cend(), [cbegin](const T &v) {
+            return F(*cbegin) == F(v);
+        }) ||
+        set.size() == count_if(set.cbegin(), set.cend(), [cbegin](const T &v) {
+            return *cbegin == v;
+        })
+        ) {
         node->type = Node::Leaf;
-        node->result = mostType<T, RT, F>(set);
         return;
     }
 
-    if (set.size() == count_if(set.cbegin(), set.cend(), [cbegin](const T &v) {
-        return F(*cbegin) == F(v);
-    })) {
-        node->type = Node::Leaf;
-        node->result = F(*cbegin);
-        return;
-    }
-
-    node->bestArg = selectArg(set, curArgs);
+    node->bestArg = selectArg(set, node->curArgs);
     int index = node->bestArg.first;
-    float point = node->bestArg.second;
+    ArgType point = node->bestArg.second;
 
-    std::vector<T> left, right;
-    for (const auto &v : set) {
-        if (getFun[index](v) < point) {
-            left.push_back(v);
-        } else {
-            right.push_back(v);
+    std::vector<std::vector<T>> subSet;
+    std::vector<ArgType> subSet_point;
+
+    if (argTypes.at(index) == BestArgType::Discrete) {
+        std::vector<T> &tmp = const_cast<std::vector<T> &>(set);
+        std::sort(tmp.begin(), tmp.end(), [this, index](const T &a, const T &b) {
+            return getFun[index](a) < getFun[index](b);
+        });
+        subSet.push_back(std::vector<T>());
+        int subSetIndex = 0;
+        auto ptr = set.cbegin();
+        subSet_point.push_back(getFun[index](*ptr));
+        for (int i = 0; i < set.size(); ++i) {
+            if (getFun[index](set[i]) == (getFun[index](*ptr))) {
+                subSet[subSetIndex].push_back(set[i]);
+            } else {
+                subSet.push_back(std::vector<T>());
+                subSet_point.push_back(getFun[index](set[i]));
+                ++subSetIndex;
+                subSet[subSetIndex].push_back(set[i]);
+                ptr = set.cbegin() + i;
+            }
         }
-    }
+        std::remove(node->curArgs.begin(), node->curArgs.end(), index);
+    } else { // argTypes.at(curIndex) == BestArgType::Continuous
+        subSet.push_back(std::vector<T>());
+        subSet.push_back(std::vector<T>());
+        for (const auto &v : set) {
+            if (getFun[index](v) < point) {
+                subSet[0].push_back(v);
+            } else {
+                subSet[1].push_back(v);
+            }
+        }
 
-    int size = set.size();
+        if (subSet[0].size() == 0 || subSet[1].size() == 0) {
+            node->type = Node::Leaf;
+            return;
+        }
 
-    if (left.size() == size || right.size() == size) {
-        node->type = Node::Leaf;
-        node->result = mostType<T, RT, F>(set);
-        return;
+        subSet_point.push_back(ArgType());
+        subSet_point.push_back(ArgType());
     }
 
     const_cast<std::vector<T> &>(set).clear();
 
-    train(left, node);
-    train(right, node);
+    for (int i = 0; i < subSet.size(); ++i) {
+        train(subSet[i], node, subSet_point[i]);
+    }
 }
 
 template<typename T, typename RT, RT (*F)(const T &), int ArgNum, typename GetArgFun>
@@ -159,10 +203,19 @@ RT Model<T, RT, F, ArgNum, GetArgFun>::result(const T &value) {
         if (curNode->type == Node::Leaf) {
             return curNode->result;
         }
-        if (getFun[curNode->bestArg.first](value) < curNode->bestArg.second) {
-            curNode = curNode->subNode[0];
-        } else {
-            curNode = curNode->subNode[1];
+        if (argTypes[curNode->bestArg.first] == BestArgType::Discrete) {
+            for (const auto &v : curNode->subNode) {
+                if (v->compass == getFun[curNode->bestArg.first](value)) {
+                    curNode = v;
+                    break;
+                }
+            }
+        } else { // argTypes(curNode->bestArg.first) == BestArgType::Continuous
+            if (getFun[curNode->bestArg.first](value) < curNode->bestArg.second) {
+                curNode = curNode->subNode[0];
+            } else {
+                curNode = curNode->subNode[1];
+            }
         }
     }
 }
@@ -209,47 +262,76 @@ RT mostType(const std::vector<T> &set) {
 }
 
 template<typename T, typename RT, RT (*F)(const T &), int ArgNum, typename GetArgFun>
-std::pair<int, float> Model<T, RT, F, ArgNum, GetArgFun>::selectArg(const std::vector<T> &set, const std::vector<int> &curArgs) {
+std::pair<int, typename Model<T, RT, F, ArgNum, GetArgFun>::ArgType>
+Model<T, RT, F, ArgNum, GetArgFun>::selectArg(const std::vector<T> &set, const std::vector<int> &curArgs) {
     int index = curArgs[0];
-    float point; // 划分点
     float gani = -1e20;
-
     float ent_set = Ent(set);
+
+    ArgType point; // 划分点
 
     for (int i = 0; i < curArgs.size(); ++i) {
         int curIndex = curArgs.at(i);
-        std::vector<std::pair<float, RT>> a; // a 是属性值
+        std::vector<std::pair<ArgType, RT>> a; // a 是属性值
         for (const auto &v : set) {
             a.push_back(std::make_pair(getFun[curIndex](v), F(v)));
         }
         std::sort(a.begin(), a.end(), [](const auto &a, const auto &b) {
             return a.first < b.first;
         });
-        std::vector<float> tSet;
-        for (auto it = a.cbegin(); it != a.cend() - 1; ++it) {
-            tSet.push_back((it->first + (it + 1)->first) / 2);
-        }
-        float tmpPoint = 0; // 临时划分点
+
         float t_max = -1e20;
-        for (float t : tSet) {
-            std::vector<std::pair<float, RT>> minus, plus;
+
+        if (argTypes.at(curIndex) == BestArgType::Discrete) {
+            std::vector<ArgType> attrs;
             for (const auto &v : a) {
-                if (v.first < t) {
-                    minus.push_back(v);
-                } else {
-                    plus.push_back(v);
+                attrs.push_back(v.first);
+            }
+            auto last = std::unique(attrs.begin(), attrs.end());
+            attrs.erase(last, attrs.end());
+
+            float sum = 0;
+
+            for (const auto &v : attrs) {
+                std::vector<T> attr_v_set;
+                for (const T &e : set) {
+                    if (getFun[curIndex](e) == v) {
+                        attr_v_set.push_back(e);
+                    }
+                }
+                sum += float(attr_v_set.size()) / set.size() * Ent(attr_v_set);
+            }
+            t_max = Ent(set) - sum;
+            if (t_max > gani) {
+                gani = t_max;
+                index = curIndex;
+            }
+        } else { // argTypes.at(curIndex) == BestArgType::Continuous
+            std::vector<ArgType> tSet;
+            for (auto it = a.cbegin(); it != a.cend() - 1; ++it) {
+                tSet.push_back((it->first + (it + 1)->first) / 2);
+            }
+            ArgType tmpPoint = 0; // 临时划分点
+            for (ArgType t : tSet) {
+                std::vector<std::pair<ArgType, RT>> minus, plus;
+                for (const auto &v : a) {
+                    if (v.first < t) {
+                        minus.push_back(v);
+                    } else {
+                        plus.push_back(v);
+                    }
+                }
+                float gani_t = ent_set - ((((ArgType)minus.size() / a.size()) * Ent(minus)) + (((ArgType)plus.size() / a.size()) * Ent(plus)));
+                if (gani_t > t_max) {
+                    t_max = gani_t;
+                    tmpPoint = t;
                 }
             }
-            float gani_t = ent_set - ((((float)minus.size() / a.size()) * Ent(minus)) + (((float)plus.size() / a.size()) * Ent(plus)));
-            if (gani_t > t_max) {
-                t_max = gani_t;
-                tmpPoint = t;
+            if (t_max > gani) {
+                gani = t_max;
+                index = curIndex;
+                point = tmpPoint;
             }
-        }
-        if (t_max > gani) {
-            gani = t_max;
-            index = i;
-            point = tmpPoint;
         }
     }
 
@@ -271,7 +353,7 @@ float Model<T, RT, F, ArgNum, GetArgFun>::Ent(const std::vector<T> &set) {
 }
 
 template<typename T, typename RT, RT (*F)(const T &), int ArgNum, typename GetArgFun>
-float Model<T, RT, F, ArgNum, GetArgFun>::Ent(const std::vector<std::pair<float, RT>> &set) {
+float Model<T, RT, F, ArgNum, GetArgFun>::Ent(const std::vector<std::pair<ArgType, RT>> &set) {
     // 获得 Ent(D)
     auto cbegin = set.cbegin();
     float p1 = std::count_if(set.cbegin(), set.cend(), [cbegin](const auto &v) {

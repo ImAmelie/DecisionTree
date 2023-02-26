@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <ctime>
@@ -12,12 +13,19 @@ void raisin() {
 
     Model<RAISIN_NAMESPACE::Raisin, string, RAISIN_NAMESPACE::getType, 7, float(*)(const RAISIN_NAMESPACE::Raisin &v)> model;
     model.getFun.push_back(RAISIN_NAMESPACE::getArea);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(RAISIN_NAMESPACE::getMajorAxisLength);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(RAISIN_NAMESPACE::getMinorAxisLength);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(RAISIN_NAMESPACE::getEccentricity);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(RAISIN_NAMESPACE::getConvexArea);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(RAISIN_NAMESPACE::getExtent);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(RAISIN_NAMESPACE::getPerimeter);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
 
     std::vector<RAISIN_NAMESPACE::Raisin> trainSet = RAISIN_NAMESPACE::load("../data/Raisin_train.data");
     start = clock();
@@ -26,10 +34,10 @@ void raisin() {
     trainSet.clear();
 
     cout << std::fixed << std::setprecision(2)
-         << "训练用时: "
-         << float(end - start) / CLOCKS_PER_SEC
-         << " s"
-         << endl;
+        << "训练用时: "
+        << float(end - start) / CLOCKS_PER_SEC
+        << " s"
+        << endl;
 
     std::vector<RAISIN_NAMESPACE::Raisin> testSet = RAISIN_NAMESPACE::load("../data/Raisin_test.data");
     start = clock();
@@ -38,14 +46,14 @@ void raisin() {
     testSet.clear();
 
     cout << std::fixed << std::setprecision(2)
-         << "测试用时："
-         << float(end - start) / CLOCKS_PER_SEC
-         << " s"
-         << endl
-         << "测试结果准确率: "
-         << accuracy * 100
-         << "%"
-         << endl;
+        << "测试用时："
+        << float(end - start) / CLOCKS_PER_SEC
+        << " s"
+        << endl
+        << "测试结果准确率: "
+        << accuracy * 100
+        << "%"
+        << endl;
 }
 
 void wdbc() {
@@ -53,47 +61,77 @@ void wdbc() {
 
     Model<WDBC_NAMESPACE::WDBC, char, WDBC_NAMESPACE::getResult, 30, float(*)(const WDBC_NAMESPACE::WDBC &v)> model;
     model.getFun.push_back(WDBC_NAMESPACE::getA0);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA1);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA2);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA3);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA4);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA5);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA6);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA7);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA8);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA9);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA10);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA11);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA12);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA13);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA14);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA15);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA16);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA17);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA18);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA19);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA20);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA21);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA22);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA23);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA24);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA25);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA26);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA27);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA28);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
     model.getFun.push_back(WDBC_NAMESPACE::getA29);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
 
     std::vector<WDBC_NAMESPACE::WDBC> trainSet = WDBC_NAMESPACE::load("../data/wdbc_train.data");
     start = clock();
-    model.train(trainSet, nullptr);
+    model.train(trainSet);
     end = clock();
     trainSet.clear();
 
     cout << std::fixed << std::setprecision(2)
-         << "训练用时: "
-         << float(end - start) / CLOCKS_PER_SEC
-         << " s"
-         << endl;
+        << "训练用时: "
+        << float(end - start) / CLOCKS_PER_SEC
+        << " s"
+        << endl;
 
     std::vector<WDBC_NAMESPACE::WDBC> testSet = WDBC_NAMESPACE::load("../data/wdbc_test.data");
     start = clock();
@@ -102,17 +140,18 @@ void wdbc() {
     testSet.clear();
 
     cout << std::fixed << std::setprecision(2)
-         << "测试用时："
-         << float(end - start) / CLOCKS_PER_SEC
-         << " s"
-         << endl
-         << "测试结果准确率: "
-         << accuracy * 100
-         << "%"
-         << endl;
+        << "测试用时："
+        << float(end - start) / CLOCKS_PER_SEC
+        << " s"
+        << endl
+        << "测试结果准确率: "
+        << accuracy * 100
+        << "%"
+        << endl;
 }
 
 int main(int, char **) {
+    // raisin();
     wdbc();
 
     return 0;
