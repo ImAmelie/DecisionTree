@@ -6,6 +6,7 @@
 #include "ai.hpp"
 #include "raisin.h"
 #include "wdbc.h"
+#include "iris.h"
 using namespace std;
 
 void raisin() {
@@ -29,10 +30,11 @@ void raisin() {
 
     std::vector<RAISIN_NAMESPACE::Raisin> trainSet = RAISIN_NAMESPACE::load("../data/Raisin_train.data");
     start = clock();
-    model.train(trainSet, nullptr);
+    model.train(trainSet);
     end = clock();
     trainSet.clear();
 
+    cout << "Raisin:" << endl;
     cout << std::fixed << std::setprecision(2)
         << "训练用时: "
         << float(end - start) / CLOCKS_PER_SEC
@@ -127,6 +129,7 @@ void wdbc() {
     end = clock();
     trainSet.clear();
 
+    cout << "WDBC:" << endl;
     cout << std::fixed << std::setprecision(2)
         << "训练用时: "
         << float(end - start) / CLOCKS_PER_SEC
@@ -150,9 +153,53 @@ void wdbc() {
         << endl;
 }
 
+void iris() {
+    clock_t start, end;
+
+    Model<IRIS_NAMESPACE::Iris, string, IRIS_NAMESPACE::getType, 4, float(*)(const IRIS_NAMESPACE::Iris &v)> model;
+    model.getFun.push_back(IRIS_NAMESPACE::getA0);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(IRIS_NAMESPACE::getA1);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(IRIS_NAMESPACE::getA2);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+    model.getFun.push_back(IRIS_NAMESPACE::getA3);
+    model.argTypes.push_back(decltype(model)::BestArgType::Continuous);
+
+    cout << "Iris:" << endl;
+    std::vector<IRIS_NAMESPACE::Iris> trainSet = IRIS_NAMESPACE::load("../data/iris_train.data");
+    start = clock();
+    model.train(trainSet);
+    end = clock();
+    trainSet.clear();
+
+    cout << std::fixed << std::setprecision(2)
+        << "训练用时: "
+        << float(end - start) / CLOCKS_PER_SEC
+        << " s"
+        << endl;
+
+    std::vector<IRIS_NAMESPACE::Iris> testSet = IRIS_NAMESPACE::load("../data/iris_test.data");
+    start = clock();
+    float accuracy = model.test(testSet);
+    end = clock();
+    testSet.clear();
+
+    cout << std::fixed << std::setprecision(2)
+        << "测试用时："
+        << float(end - start) / CLOCKS_PER_SEC
+        << " s"
+        << endl
+        << "测试结果准确率: "
+        << accuracy * 100
+        << "%"
+        << endl;
+}
+
 int main(int, char **) {
-    // raisin();
+    raisin();
     wdbc();
+    iris();
 
     return 0;
 }
