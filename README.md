@@ -64,3 +64,15 @@ g++ main.cpp raisin.cpp wdbc.cpp -o demo.exe
 `ai2.hpp` 是带剪枝功能的 C4.5 决策树。
 
 `ai3.hpp` 是不带剪枝功能的 CART 决策树
+
+切换方法：修改 `main.cpp` 头文件包含就可以了，如把
+
+```cpp
+#include "ai.hpp"
+```
+
+改为
+
+```cpp
+#include "ai3.hpp"
+```
