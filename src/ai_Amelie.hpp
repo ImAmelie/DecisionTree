@@ -158,8 +158,6 @@ void Model<T, RT, F, ArgNum, GetArgFun>::train(const std::vector<T> &set, std::s
 
     centers.clear();
 
-    int bestRankIndex = 0;
-
     for (int i = 0; i < rank.size(); ++i) {
         T center0 = rank[i].second.first;
         T center1 = rank[i].second.second;
