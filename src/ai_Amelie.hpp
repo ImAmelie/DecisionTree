@@ -6,8 +6,6 @@
 #ifndef AI_H
 #define AI_H
 
-#include <iostream> //delete
-
 #include <type_traits>
 #include <vector>
 #include <array>
