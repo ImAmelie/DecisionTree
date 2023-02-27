@@ -60,6 +60,8 @@ private:
     };
     std::shared_ptr<Node> root;
 
+    std::array<std::tuple<ArgType, ArgType>, ArgNum> z_score_model;
+
     // 工具成员函数
     inline std::pair<int, ArgType> selectArg(const std::vector<T> &set, const std::vector<int> &curArgs);
     inline float Ent(const std::vector<T> &set);
@@ -70,7 +72,6 @@ public:
 
     std::vector<GetArgFun> getFun;
     std::vector<BestArgType> argTypes;
-    std::array<std::tuple<ArgType, ArgType>, ArgNum> z_score_model;
 
     int minLeafSize = 3; // 最小叶生成尺寸
 
