@@ -128,12 +128,12 @@ void Model<T, RT, F, ArgNum, GetArgFun>::train(const std::vector<T> &set, std::s
             barycenter[F(v)] = std::make_tuple(1, v);
             continue;
         }
-        T center = std::get<1>(barycenter[F(v)]); // 旧的中心
-        float center_weight = std::get<0>(barycenter[F(v)]); // 旧的中心体重
-        T newCenter; // 新的中心
-        float newCenter_weight = center_weight + 1; // 新的中心的体重
+        T center = std::get<1>(barycenter[F(v)]); // 旧的重心
+        float center_weight = std::get<0>(barycenter[F(v)]); // 旧的重心体重
+        T newCenter; // 新的重心
+        float newCenter_weight = center_weight + 1; // 新的重心体重
         for (int i = 0; i < ArgNum; ++i) {
-            // 计算新中心坐标数据
+            // 计算新重心坐标数据
             getFun[i](newCenter) = getFun[i](center) + (getFun[i](v) - getFun[i](center)) * (1 / (center_weight + 1));
         }
         barycenter[F(v)] = std::make_tuple(newCenter_weight, newCenter);
