@@ -404,29 +404,33 @@ Model<T, RT, F, ArgNum, GetArgFun>::selectArg(const std::vector<T> &set, const s
 template<typename T, typename RT, RT &(*F)(const T &), int ArgNum, typename GetArgFun>
 float Model<T, RT, F, ArgNum, GetArgFun>::Ent(const std::vector<T> &set) {
     // 获得 Ent(D)
-    auto cbegin = set.cbegin();
-    float p1 = std::count_if(set.cbegin(), set.cend(), [cbegin](const T &v) {
-        return F(*cbegin) == F(v);
-    });
-    float p2 = set.size() - p1;
-    p1 /= set.size();
-    p2 /= set.size();
-    float ent_d = -(p1 * log2f(p1) + p2 * log2f(p2));
-    return ent_d;
+    float ent = 0;
+    std::map<RT, int> types;
+    for (const auto &v : set) {
+        ++types[F(v)];
+    }
+    for (auto it = types.cbegin(); it != types.cend(); ++it) {
+        float p = float(it->second) / set.size();
+        ent += p * log2f(p);
+    }
+
+    return -ent;
 }
 
 template<typename T, typename RT, RT &(*F)(const T &), int ArgNum, typename GetArgFun>
 float Model<T, RT, F, ArgNum, GetArgFun>::Ent(const std::vector<std::pair<ArgType, RT>> &set) {
     // 获得 Ent(D)
-    auto cbegin = set.cbegin();
-    float p1 = std::count_if(set.cbegin(), set.cend(), [cbegin](const auto &v) {
-        return cbegin->second == v.second;
-    });
-    float p2 = set.size() - p1;
-    p1 /= set.size();
-    p2 /= set.size();
-    float ent_d = -(p1 * log2f(p1) + p2 * log2f(p2));
-    return ent_d;
+    float ent = 0;
+    std::map<RT, int> types;
+    for (const auto &v : set) {
+        ++types[v.second];
+    }
+    for (auto it = types.cbegin(); it != types.cend(); ++it) {
+        float p = float(it->second) / set.size();
+        ent += p * log2f(p);
+    }
+
+    return -ent;
 }
 
 #endif
