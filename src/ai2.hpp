@@ -28,7 +28,7 @@ std::pair<RT, int> mostType(const std::vector<T> &set);
  *   T: 数据集合中数据的类型
  *   RT: 数据的分类标签类型
  *   F: 指向 获取单个数据分类标签的函数 的指针
- *   ArgNum: 数据集合中数据的元素个数
+ *   ArgNum: 数据集合中数据的属性个数
  *   GetArgFun: 获取单个数据属性值的函数 的函数类型
  */
 template<typename T, typename RT, RT (*F)(const T &), int ArgNum, typename GetArgFun>
